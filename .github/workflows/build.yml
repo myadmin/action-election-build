@@ -33,7 +33,7 @@ jobs:
               run: npm install
 
             - name: Build src code
-              run: npm run build:src
+              run: npm run build
 
             - name: Release package
               run: |
@@ -74,7 +74,7 @@ jobs:
               run: npm install
 
             - name: Build src code
-              run: npm run build:src
+              run: npm run build
 
             - name: Release package
               run: |
