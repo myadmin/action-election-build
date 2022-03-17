@@ -35,7 +35,7 @@ jobs:
             - name: Build src code
               run: npm run build
 							env:
-									GITHUB_TOKEN: ${{ secrets.access_token }}
+                  GITHUB_TOKEN: ${{ secrets.access_token }}
 
             - name: Release package
               run: |
@@ -78,7 +78,7 @@ jobs:
             - name: Build src code
               run: npm run build
 							env:
-									GITHUB_TOKEN: ${{ secrets.access_token }}
+                  GITHUB_TOKEN: ${{ secrets.access_token }}
 
             - name: Release package
               run: |
