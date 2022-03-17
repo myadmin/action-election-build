@@ -1,61 +1,75 @@
 name: Build/release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+    push:
+        tags:
+            - 'v*.*.*'
 
 jobs:
-  release:
-    name: build and release electron app
+    release:
+        name: build and release electron app
 
-    runs-on: ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest]
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [windows-latest, macos-latest]
 
-    steps:
-      # step1: check out repository
-      - name: Check out Git repository
-        uses: actions/checkout@v3.0.0
+        steps:
+            # step1: check out repository
+            - name: Check out Git repository
+              uses: actions/checkout@v3.0.0
 
-      # step2: install node env
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v3.0.0
-        with:
-          node-version: "14"
+            # step2: install node env
+            - name: Install Node.js, NPM and Yarn
+              uses: actions/setup-node@v3.0.0
+              with:
+                  node-version: '14'
 
-      # step3: npm install
-      - name: npm install
-        run: |
-          npm install
+            # step3: npm install
+            - name: npm install
+              run: |
+                  npm install
 
-      # step4: build app for mac/win
-      - name: build windows app
-        run: |
-          npm run build
-        env:
-          GITHUB_TOKEN: ${{ secrets.access_token }}
+            # step4: build app for mac/win
+            - name: build windows app
+              if: matrix.os == 'windows-latest'
+              run: |
+                  npm run build
+              env:
+                  GITHUB_TOKEN: ${{ secrets.access_token }}
 
-      # step6: upload artifacts
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3.0.0
-        with:
-          name: ${{ matrix.os }}
-          path: dist
+            - name: build mac app
+              if: matrix.os == 'macos-latest'
+              run: |
+                  npm run build
+              env:
+                  GITHUB_TOKEN: ${{ secrets.access_token }}
 
-      # step5: cleanup artifacts in dist_electron
-      - name: cleanup artifacts
-        run: |
-          npx rimraf "dist/!(*.exe)"
+            # step6: upload artifacts
+            - name: upload artifacts
+              uses: actions/upload-artifact@v3.0.0
+              with:
+                  name: ${{ matrix.os }}
+                  path: dist
 
-      # step7: create release
-      - name: release
-        uses: softprops/action-gh-release@v0.1.14
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: "dist/**"
-        env:
-          GITHUB_TOKEN: ${{ secrets.access_token }}
+            # step5: cleanup artifacts in dist_electron
+            - name: cleanup artifacts for windows
+              if: matrix.os == 'windows-latest'
+              run: |
+                  npx rimraf "dist/!(*.exe)"
+
+            - name: cleanup artifacts for macos
+              if: matrix.os == 'macos-latest'
+              run: |
+                  npx rimraf "dist/!(*.dmg)"
+
+            # step7: create release
+            - name: release
+              uses: softprops/action-gh-release@v0.1.14
+              if: startsWith(github.ref, 'refs/tags/')
+              with:
+                  files: 'dist/**'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.access_token }}
