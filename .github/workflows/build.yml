@@ -1,75 +1,86 @@
-name: Build/release
+name: Build
 
 on:
-    push:
-        tags:
-            - 'v*.*.*'
+	push:
+		branches:
+			- master
 
 jobs:
-    release:
-        name: build and release electron app
+	Windows:
+		name: Windows
+		runs-on: windows-latest
+		steps:
+			- name: Check out git repository
+        uses: actions/checkout@v2
 
-        runs-on: ${{ matrix.os }}
+			- name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-        strategy:
-            fail-fast: false
-            matrix:
-                os: [windows-latest, macos-latest]
+			- name: Cache file
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            %APPDATA%\npm-cache
+            %LOCALAPPDATA%\electron\Cache
+            %LOCALAPPDATA%\electron-builder\Cache
+          key: ${{ runner.os }}-build-caches-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+      - name: Install Dependencies
+        run: npm install
 
-        steps:
-            # step1: check out repository
-            - name: Check out Git repository
-              uses: actions/checkout@v3.0.0
+			- name: Build src code
+        run: npm run build
 
-            # step2: install node env
-            - name: Install Node.js, NPM and Yarn
-              uses: actions/setup-node@v3.0.0
-              with:
-                  node-version: '14'
+			- name: Release package
+        run: |
+          npm run publish:win:setup:x64:always
+          npm run publish:win:setup:x86
+          npm run publish:win:setup:arm64
+          npm run publish:win:setup:x86_64
+          npm run publish:win:7z:x64
+          npm run publish:win:7z:x86
+          npm run publish:win:7z:arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.access_token }}
 
-            # step3: npm install
-            - name: npm install
-              run: |
-                  npm install
+	Mac:
+    name: Mac
+    runs-on: macos-latest
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v2
 
-            # step4: build app for mac/win
-            - name: build windows app
-              if: matrix.os == 'windows-latest'
-              run: |
-                  npm run build
-              env:
-                  GITHUB_TOKEN: ${{ secrets.access_token }}
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-            - name: build mac app
-              if: matrix.os == 'macos-latest'
-              run: |
-                  npm run build
-              env:
-                  GITHUB_TOKEN: ${{ secrets.access_token }}
+      - name: Cache file
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            $HOME/.cache/electron
+            $HOME/.cache/electron-builder
+            $HOME/.npm/_prebuilds
+          key: ${{ runner.os }}-build-caches-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+      - name: Install Dependencies
+        run: npm install
 
-            # step6: upload artifacts
-            - name: upload artifacts
-              uses: actions/upload-artifact@v3.0.0
-              with:
-                  name: ${{ matrix.os }}
-                  path: dist
+      - name: Build src code
+        run: npm run build:src
 
-            # step5: cleanup artifacts in dist_electron
-            - name: cleanup artifacts for windows
-              if: matrix.os == 'windows-latest'
-              run: |
-                  npx rimraf "dist/!(*.exe)"
-
-            - name: cleanup artifacts for macos
-              if: matrix.os == 'macos-latest'
-              run: |
-                  npx rimraf "dist/!(*.dmg)"
-
-            # step7: create release
-            - name: release
-              uses: softprops/action-gh-release@v0.1.14
-              if: startsWith(github.ref, 'refs/tags/')
-              with:
-                  files: 'dist/**'
-              env:
-                  GITHUB_TOKEN: ${{ secrets.access_token }}
+      - name: Release package
+        run: |
+          npm run publish:mac:dmg:always
+          npm run publish:mac:dmg:arm64
+        env:
+          ELECTRON_CACHE: $HOME/.cache/electron
+          ELECTRON_BUILDERCACHE: $HOME/.cache/electron-builder
+          GITHUB_TOKEN: ${{ secrets.access_token }}
