@@ -31,7 +31,8 @@
   "devDependencies": {
     "electron": "^17.1.2",
     "electron-builder": "^22.14.13",
-    "electron-updater": "^4.6.5"
+    "electron-updater": "^4.6.5",
+    "cross-env": "^7.0.3"
   },
   "build": {
     "productName": "action-election",
