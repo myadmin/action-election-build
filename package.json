@@ -1,7 +1,7 @@
 {
   "name": "action-election-build",
   "version": "1.0.5",
-  "description": "action electron",
+  "description": "action electron demo",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
