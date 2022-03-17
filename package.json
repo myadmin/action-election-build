@@ -1,6 +1,6 @@
 {
   "name": "action-election-build",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "action electron",
   "main": "main.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "copyright": "xxxx",
     "compression": "store",
     "directories": {
-      "output": "build"
+      "output": "dist"
     },
     "win": {
       "icon": "build/icons/aims.ico",
