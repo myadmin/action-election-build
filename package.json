@@ -35,9 +35,9 @@
     "cross-env": "^7.0.3"
   },
   "build": {
-    "productName": "action-election",
+    "productName": "action-election-build",
     "protocols": {
-      "name": "action-election",
+      "name": "action-election-build",
       "schemes": [
         "election"
       ]
@@ -86,7 +86,7 @@
         }
       ],
       "title": "Election自动发布demo v${version}"
-    }
+    },
     "publish": [
       {
         "provider": "github",
