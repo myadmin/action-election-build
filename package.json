@@ -50,7 +50,7 @@
     "win": {
       "icon": "./resources/icons/icon.ico",
       "legalTrademarks": "lyswhut",
-      "artifactName": "${productName} v${version} ${env.ARCH} ${env.TARGET}.${ext}"
+      "artifactName": "${productName} v${version}.${ext}"
     },
     "mac": {
       "icon": "./resources/icons/icon.icns",
