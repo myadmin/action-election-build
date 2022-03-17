@@ -34,6 +34,8 @@ jobs:
 
             - name: Build src code
               run: npm run build
+							env:
+								GITHUB_TOKEN: ${{ secrets.access_token }}
 
             - name: Release package
               run: |
@@ -75,6 +77,8 @@ jobs:
 
             - name: Build src code
               run: npm run build
+							env:
+								GITHUB_TOKEN: ${{ secrets.access_token }}
 
             - name: Release package
               run: |
@@ -83,4 +87,4 @@ jobs:
               env:
                   ELECTRON_CACHE: $HOME/.cache/electron
                   ELECTRON_BUILDERCACHE: $HOME/.cache/electron-builder
-                  GITHUB_TOKEN: ${{ secrets.access_token }}
+									GITHUB_TOKEN: ${{ secrets.access_token }}
