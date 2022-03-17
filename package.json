@@ -36,28 +36,63 @@
   },
   "build": {
     "productName": "action-election",
-    "appId": "xxxxx",
-    "copyright": "xxxx",
-    "compression": "store",
-    "directories": {
-      "output": "dist"
-    },
-    "win": {
-      "icon": "build/icons/aims.ico",
-      "target": [
-        {
-          "target": "nsis"
-        }
+    "protocols": {
+      "name": "action-election",
+      "schemes": [
+        "election"
       ]
     },
-    "asar": false,
+    "appId": "cn.toside.action.election",
+    "directories": {
+      "buildResources": "./resources",
+      "output": "./build"
+    },
+    "win": {
+      "icon": "./resources/icons/icon.ico",
+      "legalTrademarks": "lyswhut",
+      "artifactName": "${productName} v${version} ${env.ARCH} ${env.TARGET}.${ext}"
+    },
+    "mac": {
+      "icon": "./resources/icons/icon.icns",
+      "category": "public.app-category.election"
+    },
+    "asar": {
+      "smartUnpack": false
+    },
     "nsis": {
       "oneClick": false,
-      "perMachine": true,
-      "allowElevation": true,
+      "language": "2052",
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "differentialPackage": true,
+      "license": "./licenses/license.rtf",
+      "shortcutName": "LX Music"
+    },
+    "dmg": {
+      "window": {
+        "width": 600,
+        "height": 400
+      },
+      "contents": [
+        {
+          "x": 106,
+          "y": 252,
+          "name": "LX Music"
+        },
+        {
+          "x": 490,
+          "y": 252,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "title": "Election自动发布demo v${version}"
     }
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "myadmin",
+        "repo": "action-election-build"
+      }
+    ]
   }
 }
