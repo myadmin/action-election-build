@@ -1,0 +1,50 @@
+{
+  "name": "action-election-build",
+  "version": "1.0.0",
+  "description": "action electron",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^17.1.2",
+    "electron-builder": "^22.14.13",
+    "electron-updater": "^4.6.5"
+  },
+  "build": {
+    "productName": "action-election",
+    "appId": "xxxxx",
+    "copyright": "xxxx",
+    "compression": "store",
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "icon": "build/icons/aims.ico",
+      "target": [
+        {
+          "target": "nsis"
+        }
+      ]
+    },
+    "asar": false,
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": {
+      "provider": "github",
+      "url": ""
+    }
+  }
+}

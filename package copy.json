@@ -1,0 +1,54 @@
+{
+  "name": "action-election-build",
+  "version": "1.0.0",
+  "description": "action electron",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^17.1.2",
+    "electron-builder": "^22.14.13",
+    "electron-updater": "^4.6.5"
+  },
+  "build": {
+    "productName": "xxxx",
+    "appId": "xxxxx",
+    "copyright": "xxxx",
+    "compression": "store",
+    "directories": {
+      "output": "build"
+    },
+    "asar": false,
+    "extraResources": {
+      "from": "./app-update.yml",
+      "to": "./b.txt"
+    },
+    "win": {
+      "icon": "xxx/icon.ico",
+      "extraResources": {
+        "from": "./app-update.yml",
+        "to": "./b.txt"
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "guid": "xxxx",
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./build/icons/aaa.ico",
+      "uninstallerIcon": "./build/icons/bbb.ico",
+      "installerHeaderIcon": "./build/icons/aaa.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "xxxx"
+    }
+  }
+}
