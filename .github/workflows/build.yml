@@ -40,22 +40,22 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.access_token }}
 
       # step5: cleanup artifacts in dist_electron
-      - name: cleanup artifacts
-        run: |
-          npx rimraf "dist/!(*.exe)"
+      # - name: cleanup artifacts
+      #   run: |
+      #     npx rimraf "build/!(*.exe)"
 
       # step6: upload artifacts
       - name: upload artifacts
         uses: actions/upload-artifact@v3.0.0
         with:
           name: ${{ matrix.os }}
-          path: dist
+          path: build
 
       # step7: create release
       - name: release
         uses: softprops/action-gh-release@v0.1.14
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: "dist/**"
+          files: "build/**"
         env:
           GITHUB_TOKEN: ${{ secrets.access_token }}

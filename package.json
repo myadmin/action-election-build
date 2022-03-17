@@ -1,6 +1,6 @@
 {
   "name": "action-election-build",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "action electron",
   "main": "main.js",
   "scripts": {
