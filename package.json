@@ -2,37 +2,20 @@
   "name": "action-election-build",
   "version": "1.0.6",
   "description": "action electron demo",
-  "main": "main.js",
+  "main": "./app/main/election.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
+    "start": "electron ./app/main/electron.js",
     "pack": "electron-builder --dir",
-    "build": "electron-builder",
-    "publish": "node publish",
-    "publish:win:setup:x64:always": "cross-env TARGET=Setup ARCH=x64 electron-builder -w=nsis --x64 -p always",
-    "publish:win:setup:x64": "cross-env TARGET=Setup ARCH=x64 electron-builder -w=nsis --x64 -p always",
-    "publish:win:setup:x86": "cross-env TARGET=Setup ARCH=x86 electron-builder -w=nsis --ia32 -p onTagOrDraft",
-    "publish:win:setup:arm64": "cross-env TARGET=Setup ARCH=arm64 electron-builder -w=nsis --arm64 -p onTagOrDraft",
-    "publish:win:setup:x86_64": "cross-env TARGET=Setup ARCH=x86_64 electron-builder -w=nsis --x64 --ia32 -p onTagOrDraft",
-    "publish:win:portable": "npm run publish:win:portable:x86_64 && npm run publish:win:portable:x64 && npm run publish:win:portable:x86",
-    "publish:win:portable:x86_64": "cross-env TARGET=portable ARCH=x86_64 electron-builder -w=portable --x64 --ia32 -p onTagOrDraft",
-    "publish:win:portable:x64": "cross-env TARGET=portable ARCH=x64 electron-builder -w=portable --x64 -p onTagOrDraft",
-    "publish:win:portable:x86": "cross-env TARGET=portable ARCH=x86 electron-builder -w=portable --ia32 -p onTagOrDraft",
-    "publish:win:7z:x64": "cross-env TARGET=green ARCH=win_x64 electron-builder -w=7z --x64 -p onTagOrDraft",
-    "publish:win:7z:x86": "cross-env TARGET=green ARCH=win_x86 electron-builder -w=7z --ia32 -p onTagOrDraft",
-    "publish:win:7z:arm64": "cross-env TARGET=green ARCH=win_arm64 electron-builder -w=7z --arm64 -p onTagOrDraft",
-    "publish:mac:dmg:always": "electron-builder -m=dmg -p always",
-    "publish:mac:dmg": "electron-builder -m=dmg -p onTagOrDraft",
-    "publish:mac:dmg:arm64": "electron-builder -m=dmg --arm64 -p onTagOrDraft"
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^17.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "11.1.1",
     "electron-builder": "^22.14.13",
-    "electron-updater": "^4.6.5",
-    "cross-env": "^7.0.3"
+    "electron-updater": "^4.6.5"
   },
   "build": {
     "productName": "action-election-build",
