@@ -47,11 +47,7 @@
     },
     "nsis": {
       "oneClick": false,
-      "language": "2052",
-      "allowToChangeInstallationDirectory": true,
-      "differentialPackage": true,
-      "license": "./licenses/license.rtf",
-      "shortcutName": "LX Music"
+      "allowToChangeInstallationDirectory": true
     },
     "publish": [
       {
