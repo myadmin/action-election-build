@@ -2,19 +2,25 @@ name: Build
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "v*.*.*"
 
 jobs:
   Windows:
-    name: Windows
-    runs-on: windows-latest
+    name: build and release electron app
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+
     steps:
       - name: Check out git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.3
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: "14"
 
@@ -22,12 +28,24 @@ jobs:
         run: npm install
 
       - name: Build src code
-        run: npm run build
+        run: npm run electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Release package
+      - name: Cleanup Artifacts
         run: |
-          npm run publish
+          npx rimraf "dist/!(*.exe)"
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ matrix.os }}
+          path: dist
+
+      - name: release
+        uses: softprops/action-gh-release@v0.1.14
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: "dist/**"
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}

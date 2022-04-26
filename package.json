@@ -1,46 +1,49 @@
 {
-  "name": "action-election-build",
-  "version": "1.0.6",
-  "description": "action electron demo",
-  "main": "./app/main/election.js",
-  "scripts": {
-    "start": "electron ./app/main/electron.js",
-    "pack": "electron-builder --dir",
-    "build": "electron-builder"
+  "name": "my-app",
+  "version": "0.2.0",
+  "author": "Your Name",
+  "description": "React-TypeScript-Electron sample with Create React App and Electron Builder",
+  "homepage": ".",
+  "main": "build/electron/main.js",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/electron-devtools-installer": "^2.2.1",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.21",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "electron-devtools-installer": "^3.2.0",
+    "electron-reload": "^1.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "typescript": "^4.5.5",
+    "web-vitals": "^2.1.4"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "electron": "11.1.1",
-    "electron-builder": "^22.14.13",
-    "electron-updater": "^4.6.5"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder",
+    "eject": "react-scripts eject"
   },
   "build": {
     "productName": "action-election-build",
-    "protocols": {
-      "name": "action-election-build",
-      "schemes": [
-        "election"
-      ]
-    },
-    "appId": "cn.toside.action.election",
+    "appId": "election-demo",
+    "extends": null,
+    "files": [
+      "build/**/*"
+    ],
     "directories": {
-      "buildResources": "./resources",
-      "output": "./build"
+      "buildResources": "assets"
     },
     "win": {
-      "icon": "./resources/icons/icon.ico",
-      "legalTrademarks": "lyswhut",
-      "artifactName": "${productName} v${version}.${ext}"
-    },
-    "mac": {
-      "icon": "./resources/icons/icon.icns",
-      "category": "public.app-category.election"
-    },
-    "asar": {
-      "smartUnpack": false
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,
@@ -50,26 +53,6 @@
       "license": "./licenses/license.rtf",
       "shortcutName": "LX Music"
     },
-    "dmg": {
-      "window": {
-        "width": 600,
-        "height": 400
-      },
-      "contents": [
-        {
-          "x": 106,
-          "y": 252,
-          "name": "LX Music"
-        },
-        {
-          "x": 490,
-          "y": 252,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ],
-      "title": "Election自动发布demo v${version}"
-    },
     "publish": [
       {
         "provider": "github",
@@ -77,5 +60,30 @@
         "repo": "action-election-build"
       }
     ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^17.1.0",
+    "electron-builder": "^22.14.13",
+    "wait-on": "^6.0.1"
   }
 }
