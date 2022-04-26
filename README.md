@@ -186,6 +186,6 @@ app.on('activate', () => {
 - [Application entry file reset to default (react-cra detected and config changed incorrectly)](https://github.com/electron-userland/electron-builder/issues/2030)
 - [Serving the Same Build from Different Paths](https://create-react-app.dev/docs/deployment#serving-the-same-build-from-different-paths)
 - [Build and Publish a Multi-Platform Electron App on GitHub](https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd)
-
+- [Git Learning](https://www.liaoxuefeng.com/wiki/896043488029600/902335212905824)
 ## 
 
