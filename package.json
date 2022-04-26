@@ -29,9 +29,9 @@
     "test": "react-scripts test",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
-    "electron:buildWin": "yarn build && tsc -p electron && electron-builder --win p always",
-    "electron:buildMac": "yarn build && tsc -p electron && electron-builder --mac p always",
-    "electron:buildLinux": "yarn build && tsc -p electron && electron-builder --deb p always",
+    "electron:buildWin": "yarn build && tsc -p electron && electron-builder --win always",
+    "electron:buildMac": "yarn build && tsc -p electron && electron-builder --mac always",
+    "electron:buildLinux": "yarn build && tsc -p electron && electron-builder --deb always",
     "eject": "react-scripts eject"
   },
   "build": {
