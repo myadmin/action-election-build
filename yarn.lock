@@ -1942,9 +1942,9 @@
   "version" "17.0.21"
 
 "@types/node@^14.6.2":
-  "integrity" "sha512-q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A=="
-  "resolved" "https://registry.npmmirror.com/@types/node/-/node-14.18.12.tgz"
-  "version" "14.18.12"
+  "integrity" "sha512-hzzmpfqOhsFmvQ9nu87qNQJ8ksofJLBIKkgaYWFapV+W8UGHCxtg5uf69ZtlDSS8rb4ax3lMgpqBnLUQETjCJA=="
+  "resolved" "https://registry.npmmirror.com/@types/node/-/node-14.18.15.tgz"
+  "version" "14.18.15"
 
 "@types/parse-json@^4.0.0":
   "integrity" "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA=="
@@ -2016,6 +2016,11 @@
   "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
   "resolved" "https://registry.npmmirror.com/@types/scheduler/-/scheduler-0.16.2.tgz"
   "version" "0.16.2"
+
+"@types/semver@^7.3.6":
+  "integrity" "sha512-L/TMpyURfBkf+o/526Zb6kd/tchUP3iBDEPjqjb+U2MAJhVRxxrmr2fwpe08E7QsV7YLcpq0tUaQ9O9x97ZIxQ=="
+  "resolved" "https://registry.npmmirror.com/@types/semver/-/semver-7.3.9.tgz"
+  "version" "7.3.9"
 
 "@types/serve-index@^1.9.1":
   "integrity" "sha512-d/Hs3nWDxNL2xAczmOVZNj92YZCS6RGxfBPjKzuu/XirCgXdpKEb88dYNbrYGint6IVWLNP+yonwVAuRC0T2Dg=="
@@ -3047,6 +3052,14 @@
   "integrity" "sha512-rhuKm5vh7E0aAmT6i8aoSfEjxzdYEFX7zDApK+eNgOhjofnWb74d9SRJv0H/8nsgOkos0TZ4zxW0P8J4N7xQ2A=="
   "resolved" "https://registry.npmmirror.com/builder-util-runtime/-/builder-util-runtime-8.9.2.tgz"
   "version" "8.9.2"
+  dependencies:
+    "debug" "^4.3.2"
+    "sax" "^1.2.4"
+
+"builder-util-runtime@9.0.0":
+  "integrity" "sha512-SkpEtSmTkREDHRJnxKEv43aAYp8sYWY8fxYBhGLBLOBIRXeaIp6Kv3lBgSD7uR8jQtC7CA659sqJrpSV6zNvSA=="
+  "resolved" "https://registry.npmmirror.com/builder-util-runtime/-/builder-util-runtime-9.0.0.tgz"
+  "version" "9.0.0"
   dependencies:
     "debug" "^4.3.2"
     "sax" "^1.2.4"
@@ -4262,6 +4275,11 @@
     "tslib" "^2.1.0"
     "unzip-crx-3" "^0.2.0"
 
+"electron-log@^4.4.6":
+  "integrity" "sha512-nirYgRdY+F+vclr8ijdwy2vW03IzFpDHTaKNWu76dEN21Y76+smcES5knS7cgHUUB0qNLOi8vZO36taakjbSXA=="
+  "resolved" "https://registry.npmmirror.com/electron-log/-/electron-log-4.4.6.tgz"
+  "version" "4.4.6"
+
 "electron-osx-sign@^0.5.0":
   "integrity" "sha512-icoRLHzFz/qxzDh/N4Pi2z4yVHurlsCAYQvsCSG7fCedJ4UJXBS6PoQyGH71IfcqKupcKeK7HX/NkyfG+v6vlQ=="
   "resolved" "https://registry.npmmirror.com/electron-osx-sign/-/electron-osx-sign-0.5.0.tgz"
@@ -4298,6 +4316,20 @@
   "integrity" "sha512-H3ksXiGhoYVQCmoMT0JMN07kEDBzc6TSv1OSp7UUPxNiSvQl7NeQCyZiMZhLEmNJ89C5FnD4Eoe1ytZnMQxxaw=="
   "resolved" "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.120.tgz"
   "version" "1.4.120"
+
+"electron-updater@^5.0.1":
+  "integrity" "sha512-dNnXPCqYmergXy3jgg4UICuD50Orug9GQe/5xfHy+BE2Fy0icB0QE+y6iQWdCDf7yeONxwMBf4HgIkGG5pIaVg=="
+  "resolved" "https://registry.npmmirror.com/electron-updater/-/electron-updater-5.0.1.tgz"
+  "version" "5.0.1"
+  dependencies:
+    "@types/semver" "^7.3.6"
+    "builder-util-runtime" "9.0.0"
+    "fs-extra" "^10.0.0"
+    "js-yaml" "^4.1.0"
+    "lazy-val" "^1.0.5"
+    "lodash.escaperegexp" "^4.1.2"
+    "lodash.isequal" "^4.5.0"
+    "semver" "^7.3.5"
 
 "electron@^17.1.0":
   "integrity" "sha512-X/qdldmQ8lA15NmeraubWCTtMeTO8K9Ser0wtSCgOXVh53Sr1Ea0VQQ7Q9LuGgWRVz4qtr40cntuEdM8icdmTw=="
@@ -6719,6 +6751,16 @@
   "integrity" "sha1-gteb/zCmfEAF/9XiUVMArZyk168= sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow=="
   "resolved" "https://registry.npmmirror.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
   "version" "4.0.8"
+
+"lodash.escaperegexp@^4.1.2":
+  "integrity" "sha512-TM9YBvyC84ZxE3rgfefxUWiQKLilstD6k7PTGt6wfbtXF8ixIJLOL3VYyV/z+ZiPLsVxAsKAFVwWlWeb2Y8Yyw=="
+  "resolved" "https://registry.npmmirror.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz"
+  "version" "4.1.2"
+
+"lodash.isequal@^4.5.0":
+  "integrity" "sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ=="
+  "resolved" "https://registry.npmmirror.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz"
+  "version" "4.5.0"
 
 "lodash.memoize@^4.1.2":
   "integrity" "sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4= sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag=="

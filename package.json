@@ -2,8 +2,8 @@
   "name": "my-app",
   "version": "0.3.5",
   "author": {
-      "name": "myadmin",
-      "url": "https://github.com/myadmin/action-election-build"
+    "name": "myadmin",
+    "url": "https://github.com/myadmin/action-election-build"
   },
   "description": "React-TypeScript-Electron sample with Create React App and Electron Builder",
   "homepage": ".",
@@ -19,7 +19,9 @@
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "electron-devtools-installer": "^3.2.0",
+    "electron-log": "^4.4.6",
     "electron-reload": "^1.5.0",
+    "electron-updater": "^5.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
