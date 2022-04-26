@@ -1,13 +1,5 @@
-React-TypeScript-Electron sample with Create React App and Electron Builder
+Electron Auto Builder
 ===========================================================================
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) with `--template typescript`option.
-
-On the top of it, the following features have been added with realatively small changes:
-
-* TypeScript supports for Electron main process source code
-* Hot-relaod support for Electron app
-* Electron Bulder support
 
 ## Available Scripts in addition to the existing ones
 
@@ -193,5 +185,7 @@ app.on('activate', () => {
 - [How to build an Electron app using Create React App and Electron Builder](https://www.codementor.io/randyfindley/how-to-build-an-electron-app-using-create-react-app-and-electron-builder-ss1k0sfer)
 - [Application entry file reset to default (react-cra detected and config changed incorrectly)](https://github.com/electron-userland/electron-builder/issues/2030)
 - [Serving the Same Build from Different Paths](https://create-react-app.dev/docs/deployment#serving-the-same-build-from-different-paths)
+- [Build and Publish a Multi-Platform Electron App on GitHub](https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd)
 
 ## 
+
