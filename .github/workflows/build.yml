@@ -6,7 +6,7 @@ on:
       - "v*.*.*"
 
 jobs:
-  Windows:
+  release:
     name: build and release electron app
     runs-on: ${{ matrix.os }}
 
@@ -22,19 +22,26 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3.0.0
         with:
-          node-version: "14"
+          node-version: "16"
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Build src code
-        run: npm run electron:build
+      - name: Build Win
+        if: matrix.os == 'windows-latest'
+        run: npm run electron:buildWin
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Cleanup Artifacts
-        run: |
-          npx rimraf "dist/!(*.exe)"
+      - name: Build Mac
+        if: matrix.os == 'macos-latest'
+        run: npm run electron:buildMac
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      - name: Build Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run electron:buildLinux
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3.0.0
