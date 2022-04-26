@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 // import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 // import { autoUpdater } from 'electron-updater';
@@ -11,8 +11,8 @@ function createWindow() {
         height: 600,
         webPreferences: {
             // contextIsolation: false,
-            preload: path.join(__dirname, 'preload.js')
-        }
+            preload: path.join(__dirname, 'preload.js'),
+        },
     });
 
     win.on('closed', () => {
@@ -29,14 +29,16 @@ function createWindow() {
 
         // Hot Reloading on 'node_modules/.bin/electronPath'
         require('electron-reload')(__dirname, {
-            electron: path.join(__dirname,
+            electron: path.join(
+                __dirname,
                 '..',
                 '..',
                 'node_modules',
                 '.bin',
-                'electron' + (process.platform === "win32" ? ".cmd" : "")),
+                'electron' + (process.platform === 'win32' ? '.cmd' : '')
+            ),
             forceHardReset: true,
-            hardResetMethod: 'exit'
+            hardResetMethod: 'exit',
         });
     }
     return win;
@@ -98,6 +100,13 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', function () {
-    // autoUpdater.checkForUpdatesAndNotify();
     sendStatusToWindow('ready');
 });
+
+ipcMain.on('update', (event, arg) => {
+    console.log('update', arg);
+    // autoUpdater.checkForUpdatesAndNotify();
+    // dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] });
+    event.reply('asynchronous-reply', 'pong');
+});
+
