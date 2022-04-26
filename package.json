@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": "Your Name",
   "description": "React-TypeScript-Electron sample with Create React App and Electron Builder",
   "homepage": ".",
@@ -29,9 +29,7 @@
     "test": "react-scripts test",
     "postinstall": "electron-builder install-app-deps",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
-    "electron:buildWin": "yarn build && tsc -p electron && electron-builder --win -p always",
-    "electron:buildMac": "yarn build && tsc -p electron && electron-builder --mac -p always",
-    "electron:buildLinux": "yarn build && tsc -p electron && electron-builder --linux -p always",
+    "electron:build": "yarn build && tsc -p electron && electron-builder -p always",
     "eject": "react-scripts eject"
   },
   "build": {
@@ -42,14 +40,39 @@
       "build/**/*"
     ],
     "directories": {
+      "output": "dist",
       "buildResources": "assets"
     },
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icons/icon.icns"
+    },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "build/icons/icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "asar": false,
+    "linux": {
+      "icon": "build/icons",
+      "target": "deb"
     },
     "publish": [
       {

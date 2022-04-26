@@ -27,30 +27,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Win
-        if: matrix.os == 'windows-latest'
-        run: npm run electron:buildWin
+      - name: Build Electron App
+        run: npm run electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      - name: Build Mac
-        if: matrix.os == 'macos-latest'
-        run: npm run electron:buildMac
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      - name: Build Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: npm run electron:buildLinux
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Cleanup Artifacts for Windows
-        if: matrix.os == 'windows-latest'
-        run: |
-          npx rimraf "dist/!(*.exe)"
-      - name: Cleanup Artifacts for MacOS
-        if: matrix.os == 'macos-latest'
-        run: |
-          npx rimraf "dist/!(*.dmg)"
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3.0.0
