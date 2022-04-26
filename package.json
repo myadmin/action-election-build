@@ -1,7 +1,11 @@
 {
   "name": "my-app",
   "version": "0.3.4",
-  "author": "Your Name",
+  "author": {
+      "name": "myadmin",
+      "email": "zhou21192345@163.com",
+      "url": "https://github.com/myadmin/action-election-build"
+  },
   "description": "React-TypeScript-Electron sample with Create React App and Electron Builder",
   "homepage": ".",
   "main": "build/electron/main.js",
