@@ -4,13 +4,10 @@ const { ipcRenderer } = window.electron;
 function App() {
     const [version, setVersion] = useState('0.0.0');
 
-    const initVersion = async () => {
-        console.log('message', ipcRenderer);
-        setVersion('1.0.2');
-    };
-
     useEffect(() => {
-        initVersion();
+        ipcRenderer.on('message', (event: any, msg: string) => {
+            console.log('msg', msg);
+        });
     }, []);
 
     return (

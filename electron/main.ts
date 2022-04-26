@@ -1,17 +1,23 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
-import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+// import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 // import { autoUpdater } from 'electron-updater';
 
+let win: any;
+
 function createWindow() {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
             // contextIsolation: false,
             preload: path.join(__dirname, 'preload.js')
         }
-    })
+    });
+
+    win.on('closed', () => {
+        win = null;
+    });
 
     if (app.isPackaged) {
         // 'build/index.html'
@@ -33,16 +39,12 @@ function createWindow() {
             hardResetMethod: 'exit'
         });
     }
+    return win;
 }
 
 function sendStatusToWindow(text: string) {
     // log.info(text);
-    // win.webContents.send('message', text);
-    console.log('text', text);
-    ipcMain.on('message', async (event, someArgument) => {
-        console.log('someArgument', text);
-        return event.returnValue = text;
-    });
+    win.webContents.send('message', text);
 }
 
 // autoUpdater.on('checking-for-update', () => {
@@ -67,29 +69,35 @@ function sendStatusToWindow(text: string) {
 //     sendStatusToWindow('Update downloaded');
 // });
 
-app.whenReady().then(() => {
-    // DevTools
-    installExtension(REACT_DEVELOPER_TOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
+// app.whenReady().then(() => {
+//     // DevTools
+//     installExtension(REACT_DEVELOPER_TOOLS)
+//         .then((name) => console.log(`Added Extension:  ${name}`))
+//         .catch((err) => console.log('An error occurred: ', err));
 
+//     createWindow();
+
+//     sendStatusToWindow('ready');
+// });
+
+app.on('ready', function () {
+    // Create the Menu
     createWindow();
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
-        }
-    });
-
-    app.on('window-all-closed', () => {
-        if (process.platform !== 'darwin') {
-            app.quit();
-        }
-    });
-
-    app.on('ready', function () {
-        // autoUpdater.checkForUpdatesAndNotify();
-        sendStatusToWindow('ready');
-    });
 });
 
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+    }
+});
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+app.on('ready', function () {
+    // autoUpdater.checkForUpdatesAndNotify();
+    sendStatusToWindow('ready');
+});
