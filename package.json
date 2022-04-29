@@ -9,6 +9,44 @@
   "homepage": "./",
   "main": "build/electron/main.js",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder -p always",
+    "eject": "react-scripts eject",
+    "release": "cross-env electron-builder",
+    "prerelease": "yarn build && tsc -p electron"
+  },
+  "build": {
+    "productName": "action-election-build",
+    "appId": "election-demo",
+    "extends": null,
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "myadmin",
+        "repo": "action-election-build"
+      }
+    ]
+  },
   "dependencies": {
     "electron-is-dev": "^2.0.0",
     "electron-updater": "^4.6.5"
@@ -35,52 +73,6 @@
     "typescript": "^4.5.5",
     "wait-on": "^6.0.1",
     "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "postinstall": "electron-builder install-app-deps",
-    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron -w\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
-    "electron:build": "yarn build && tsc -p electron && electron-builder -p always",
-    "eject": "react-scripts eject"
-  },
-  "build": {
-    "productName": "action-election-build",
-    "appId": "election-demo",
-    "extends": null,
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "package.json",
-      "electron/**/*"
-    ],
-    "directories": {
-      "output": "dist",
-      "buildResources": "assets"
-    },
-    "win": {
-      "target": [
-        "msi",
-        "nsis",
-        "zip"
-      ],
-      "verifyUpdateCodeSignature": false,
-      "artifactName": "${productName}-Web-Setup-${version}.${ext}"
-    },
-    "nsis": {
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false,
-      "perMachine": false
-    },
-    "asar": false,
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "myadmin",
-        "repo": "action-election-build"
-      }
-    ]
   },
   "eslintConfig": {
     "extends": [
