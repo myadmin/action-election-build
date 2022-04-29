@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "version": "0.3.5",
+  "version": "1.0.0",
   "author": {
     "name": "myadmin",
     "url": "https://github.com/myadmin/action-election-build"
@@ -42,7 +42,10 @@
     "appId": "election-demo",
     "extends": null,
     "files": [
-      "build/**/*"
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "electron/**/*"
     ],
     "directories": {
       "output": "dist",
@@ -67,18 +70,21 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "target": "nsis",
-      "icon": "build/icons/icon.ico"
+      "target": [
+        "msi",
+        "nsis",
+        "zip"
+      ],
+      "verifyUpdateCodeSignature": false,
+      "icon": "build/icons/icon.ico",
+      "artifactName": "${productName}-Web-Setup-${version}.${ext}"
     },
     "nsis": {
+      "allowToChangeInstallationDirectory": true,
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "perMachine": false
     },
     "asar": false,
-    "linux": {
-      "icon": "build/icons",
-      "target": "deb"
-    },
     "publish": [
       {
         "provider": "github",

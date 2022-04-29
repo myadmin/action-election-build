@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 // import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
-// import { autoUpdater } from 'electron-updater';
+import { autoUpdater } from 'electron-updater';
 
 let win: any;
 
@@ -10,7 +10,8 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            // contextIsolation: false,
+            nodeIntegration: false,
+            contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
         },
     });
@@ -49,43 +50,58 @@ function sendStatusToWindow(text: string) {
     win.webContents.send('message', text);
 }
 
-// autoUpdater.on('checking-for-update', () => {
-//     sendStatusToWindow('Checking for update...');
-// })
-// autoUpdater.on('update-available', (info) => {
-//     sendStatusToWindow('Update available.');
-// })
-// autoUpdater.on('update-not-available', (info) => {
-//     sendStatusToWindow('Update not available.');
-// })
-// autoUpdater.on('error', (err) => {
-//     sendStatusToWindow('Error in auto-updater. ' + err);
-// })
-// autoUpdater.on('download-progress', (progressObj) => {
-//     let log_message = "Download speed: " + progressObj.bytesPerSecond;
-//     log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-//     log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-//     sendStatusToWindow(log_message);
-// })
-// autoUpdater.on('update-downloaded', (info) => {
-//     sendStatusToWindow('Update downloaded');
-// });
+const message = {
+    error: '检查更新出错',
+    checking: '正在检查更新……',
+    updateAva: '检测到新版本，正在下载……',
+    updateNotAva: '现在使用的就是最新版本，不用更新',
+};
 
-// app.whenReady().then(() => {
-//     // DevTools
-//     installExtension(REACT_DEVELOPER_TOOLS)
-//         .then((name) => console.log(`Added Extension:  ${name}`))
-//         .catch((err) => console.log('An error occurred: ', err));
-
-//     createWindow();
-
-//     sendStatusToWindow('ready');
-// });
-
-app.on('ready', function () {
-    // Create the Menu
-    createWindow();
+// if (isDev) {
+//     autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+// }
+autoUpdater.autoDownload = false;
+// autoUpdater.checkForUpdates();
+autoUpdater.on('error', (error) => {
+    // dialog.showErrorBox('Error', err === null ? 'unknown' : err);
+    sendStatusToWindow(`${message.error}:${error}`);
 });
+autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for update...');
+    // mainWindow.webContents.send('checking-for-update', 'Checking for update...');
+    sendStatusToWindow(message.checking);
+});
+autoUpdater.on('update-available', () => {
+    sendStatusToWindow(message.updateAva);
+    autoUpdater.downloadUpdate();
+});
+autoUpdater.on('update-not-available', () => {
+    // dialog.showMessageBox({
+    //     title: '没有新版本',
+    //     message: '当前已经是最新版本'
+    // });
+    // mainWindow.webContents.send('update-not-available', '没有新版本');
+    sendStatusToWindow(message.updateNotAva);
+});
+autoUpdater.on('download-progress', (progress) => {
+    let logMessage = `Download speed: ${progress.bytesPerSecond}`;
+    logMessage = logMessage + ' - Download ' + progress.percent + '%';
+    logMessage = logMessage + ' (' + progress.transferred + '/' + progress.total + ')';
+    console.log(logMessage);
+    win.webContents.send('downloadProgress', progress);
+    win.setProgressBar(progress.percent / 100);
+});
+autoUpdater.on('update-downloaded', () => {
+    console.log('更新完成')
+    ipcMain.on('isUpdateNow', (e, arg) => {
+        console.log("开始更新");
+        //some code here to handle event
+        autoUpdater.quitAndInstall();
+    });
+    win.webContents.send('isUpdateNow')
+});
+
+app.on('ready', createWindow());
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -103,10 +119,11 @@ app.on('ready', function () {
     sendStatusToWindow('ready');
 });
 
-ipcMain.on('update', (event, arg) => {
-    console.log('update', arg);
-    // autoUpdater.checkForUpdatesAndNotify();
-    // dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] });
-    event.reply('asynchronous-reply', 'pong');
+ipcMain.on("checkForUpdate", () => {
+    //放外面的话启动客户端执行自动更新检查
+    autoUpdater.checkForUpdates();
 });
 
+ipcMain.on("checkAppVersion", () => {
+    win.webContents.send('version', app.getVersion());
+});

@@ -1,24 +1,42 @@
-const { ipcRenderer } = window.electron;
+import { useState, useEffect } from 'react';
+const { ipcRender } = window.electron;
 
-function App() {
-    // const [version, setVersion] = useState('0.0.0');
+const App = () => {
+    const [text, setText] = useState('');
+    const [version, setVersion] = useState('0.0.0');
+    const [progress, setProgress] = useState(0);
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         console.log('update');
-    //         ipcRenderer.on('asynchronous-reply', (event: any, arg: string) => {
-    //             console.log(arg);
-    //         });
-    //     }, 5 * 1000);
-    // }, []);
+    useEffect(() => {
+        // console.log('ipcRender', ipcRender);
+        ipcRender.receive('downloadProgress', (data: Record<string, any>) => {
+            console.log('data: download-progress', data);
+            // setText(data);
+            const progress = parseInt(data.percent, 10);
+            setProgress(progress);
+        });
 
-    const handleClick = () => {
-        ipcRenderer.send('update', 'check app version');
-    }
+        ipcRender.receive("isUpdateNow", () => {
+            ipcRender.send("isUpdateNow");
+        });
+
+        ipcRender.receive("version", (version: string) => {
+            console.log('version', version);
+            setVersion(version);
+        });
+        ipcRender.send('checkAppVersion');
+
+        ipcRender.receive('message', (data: string) => {
+            console.log('data: message', data);
+            setText(data);
+        });
+        ipcRender.send('checkForUpdate');
+    }, []);
 
     return (
         <div className="App">
-            <button onClick={handleClick}>click</button>
+            <p>current app version: {version}</p>
+            <p>{text}</p>
+            {progress ? <p>下载进度：{progress}%</p> : null}
         </div>
     );
 }
