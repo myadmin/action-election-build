@@ -1,12 +1,14 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
+
 // import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 import { autoUpdater } from 'electron-updater';
+const isDev = require('electron-is-dev');
 
-let win: any;
+let mainWindow: any;
 
 function createWindow() {
-    win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -16,17 +18,17 @@ function createWindow() {
         },
     });
 
-    win.on('closed', () => {
-        win = null;
+    mainWindow.on('closed', () => {
+        mainWindow = null;
     });
 
-    if (app.isPackaged) {
+    if (!isDev) {
         // 'build/index.html'
-        win.loadURL(`file://${__dirname}/../index.html`);
+        mainWindow.loadURL(`file://${__dirname}/../index.html`);
     } else {
-        win.loadURL('http://localhost:3000/index.html');
+        mainWindow.loadURL('http://localhost:3000');
 
-        win.webContents.openDevTools();
+        mainWindow.webContents.openDevTools();
 
         // Hot Reloading on 'node_modules/.bin/electronPath'
         require('electron-reload')(__dirname, {
@@ -42,12 +44,26 @@ function createWindow() {
             hardResetMethod: 'exit',
         });
     }
-    return win;
+    return mainWindow;
 }
+
+app.on('ready', createWindow);
+
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+    }
+});
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
 
 function sendStatusToWindow(text: string) {
     // log.info(text);
-    win.webContents.send('message', text);
+    mainWindow.webContents.send('message', text);
 }
 
 const message = {
@@ -57,9 +73,9 @@ const message = {
     updateNotAva: '现在使用的就是最新版本，不用更新',
 };
 
-// if (isDev) {
-//     autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
-// }
+if (isDev) {
+    autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+}
 autoUpdater.autoDownload = false;
 // autoUpdater.checkForUpdates();
 autoUpdater.on('error', (error) => {
@@ -88,8 +104,8 @@ autoUpdater.on('download-progress', (progress) => {
     logMessage = logMessage + ' - Download ' + progress.percent + '%';
     logMessage = logMessage + ' (' + progress.transferred + '/' + progress.total + ')';
     console.log(logMessage);
-    win.webContents.send('downloadProgress', progress);
-    win.setProgressBar(progress.percent / 100);
+    mainWindow.webContents.send('downloadProgress', progress);
+    mainWindow.setProgressBar(progress.percent / 100);
 });
 autoUpdater.on('update-downloaded', () => {
     console.log('更新完成')
@@ -98,25 +114,7 @@ autoUpdater.on('update-downloaded', () => {
         //some code here to handle event
         autoUpdater.quitAndInstall();
     });
-    win.webContents.send('isUpdateNow')
-});
-
-app.on('ready', createWindow());
-
-app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
-    }
-});
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
-
-app.on('ready', function () {
-    sendStatusToWindow('ready');
+    mainWindow.webContents.send('isUpdateNow')
 });
 
 ipcMain.on("checkForUpdate", () => {
@@ -125,5 +123,5 @@ ipcMain.on("checkForUpdate", () => {
 });
 
 ipcMain.on("checkAppVersion", () => {
-    win.webContents.send('version', app.getVersion());
+    mainWindow.webContents.send('version', app.getVersion());
 });
